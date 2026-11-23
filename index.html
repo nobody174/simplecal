@@ -9,10 +9,11 @@ License: All rights reserved © 2026 nobody174
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1410">
+<meta name="theme-color" id="themeMeta" content="#0b1410">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SimpleCal">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>SimpleCal</title>
@@ -20,7 +21,37 @@ License: All rights reserved © 2026 nobody174
 :root{
   --bg:#0b1410; --card:#14221a; --card2:#1b3024; --line:#25402f;
   --accent:#2ee57a; --accent-d:#1a9c53; --text:#eaf5ee; --muted:#8fb09b;
-  --blue:#4aa8ff; --warn:#ffb020;
+  --blue:#4aa8ff; --blue-d:#2a7fd0; --warn:#ffb020; --danger:#ff7a7a;
+  --deep:#0e1b14; --item:#101c15; --on-accent:#04210f; --navbg:rgba(11,20,16,.92);
+  --zone:rgba(46,229,122,.30); --zone2:rgba(46,229,122,.14); --shadow:rgba(0,0,0,.45);
+}
+:root[data-theme="light"]{
+  --bg:#f2f7f3; --card:#ffffff; --card2:#e3f5ea; --line:#cfded4;
+  --accent:#16a34a; --accent-d:#15803d; --text:#14231a; --muted:#5a7364;
+  --blue:#1d6fd1; --blue-d:#1553a0; --warn:#b86e00; --danger:#d12f2f;
+  --deep:#e7efe9; --item:#f8fbf9; --on-accent:#ffffff; --navbg:rgba(242,247,243,.94);
+  --zone:rgba(22,163,74,.24); --zone2:rgba(22,163,74,.12); --shadow:rgba(0,0,0,.14);
+}
+:root[data-theme="matchday"]{
+  --bg:#000000; --card:#111111; --card2:#1c1c1c; --line:#2c2c2c;
+  --accent:#c6ff00; --accent-d:#8fb800; --text:#ffffff; --muted:#a0a0a0;
+  --blue:#00e5ff; --blue-d:#00a0b4; --warn:#ff9100; --danger:#ff6b6b;
+  --deep:#080808; --item:#0c0c0c; --on-accent:#000000; --navbg:rgba(0,0,0,.92);
+  --zone:rgba(198,255,0,.26); --zone2:rgba(198,255,0,.12); --shadow:rgba(0,0,0,.7);
+}
+:root[data-theme="slate"]{
+  --bg:#0f1720; --card:#172230; --card2:#1f2f42; --line:#2b3f55;
+  --accent:#5eead4; --accent-d:#14b8a6; --text:#e8f1f8; --muted:#8ea5ba;
+  --blue:#7aa2ff; --blue-d:#4a6fd6; --warn:#fbbf24; --danger:#ff8a8a;
+  --deep:#0c131b; --item:#131d29; --on-accent:#04201c; --navbg:rgba(15,23,32,.92);
+  --zone:rgba(94,234,212,.26); --zone2:rgba(94,234,212,.12); --shadow:rgba(0,0,0,.5);
+}
+:root[data-theme="red"]{
+  --bg:#160d0d; --card:#241414; --card2:#331c1c; --line:#4a2a2a;
+  --accent:#ff5a4e; --accent-d:#c93a30; --text:#fff1ee; --muted:#c79f9a;
+  --blue:#ffc247; --blue-d:#d99a1a; --warn:#ffc247; --danger:#ff9a90;
+  --deep:#1b0f0f; --item:#1d1111; --on-accent:#2b0705; --navbg:rgba(22,13,13,.92);
+  --zone:rgba(255,90,78,.28); --zone2:rgba(255,90,78,.13); --shadow:rgba(0,0,0,.55);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);
@@ -31,7 +62,8 @@ button{font:inherit;color:inherit}
 
 /* Header / date nav */
 .datebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.datebar .label{font-size:20px;font-weight:700;text-transform:capitalize;text-align:center;flex:1}
+.datebar .label{font-size:20px;font-weight:700;text-align:center;flex:1}
+.datebar .label::first-letter{text-transform:uppercase}
 .datebar .label small{display:block;font-size:12px;font-weight:500;color:var(--muted);text-transform:none}
 .iconbtn{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
   background:var(--card);font-size:22px;cursor:pointer}
@@ -40,7 +72,9 @@ button{font:inherit;color:inherit}
 
 /* Summary */
 .summary{position:sticky;top:env(safe-area-inset-top);z-index:5;background:var(--card);border:1px solid var(--line);
-  border-radius:18px;padding:10px 14px 12px;margin-bottom:14px;box-shadow:0 6px 14px rgba(0,0,0,.45)}
+  border-radius:18px;padding:10px 14px 12px;margin-bottom:22px;box-shadow:0 6px 14px var(--shadow)}
+.summary::after{content:'';position:absolute;left:-2px;right:-2px;top:100%;height:16px;background:linear-gradient(var(--bg),transparent);pointer-events:none}
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--bg);z-index:4}
 .hello{font-size:13px;color:var(--muted);margin:0 2px 8px}
 .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .big{font-size:34px;font-weight:800;line-height:1}
@@ -48,19 +82,30 @@ button{font:inherit;color:inherit}
 .status{font-size:16px;font-weight:700;text-align:right;line-height:1.15}
 .status small{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}
 .status.mer{color:var(--warn)} .status.nesten{color:var(--blue)} .status.ok{color:var(--accent)}
-.track{position:relative;height:14px;background:#0e1b14;border-radius:10px;overflow:hidden}
-.zone{position:absolute;top:0;bottom:0;background:rgba(46,229,122,.18);
-  border-left:1px dashed var(--accent-d);border-right:1px dashed var(--accent-d)}
+.track{position:relative;height:14px;background:var(--deep);border-radius:10px;overflow:hidden}
+.zone{position:absolute;top:0;bottom:0;background:var(--zone);
+  border-left:2px solid var(--accent-d);border-right:2px solid var(--accent-d)}
 .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent-d),var(--accent));
   border-radius:10px;transition:width .25s}
-.fill.over{background:linear-gradient(90deg,#2a7fd0,var(--blue))}
+.fill.over{background:linear-gradient(90deg,var(--blue-d),var(--blue))}
 
 /* Meal accordion */
 .meal{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:10px;overflow:hidden}
 .meal.done{border-color:var(--accent-d)}
 .mhead{display:flex;align-items:center;justify-content:space-between;min-height:62px;padding:0 16px;cursor:pointer}
 .mhead:active{background:var(--card2)}
+.mhead .t{min-width:0;flex:1}
 .mhead h2{margin:0;font-size:18px}
+.msum{font-size:13px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mhead .r{margin-left:12px;white-space:nowrap}
+.mguide{font-size:13px;color:var(--muted);margin:0 2px 10px;line-height:1.35}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:6px 0}
+details summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:8px}
+.themes{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+.themebtn{display:flex;align-items:center;gap:8px;height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);cursor:pointer;font-weight:700}
+.themebtn.on{border-color:var(--accent)}
+.themebtn i{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:block}
 .mhead .r{font-size:15px;color:var(--muted);font-weight:700}
 .meal.done .mhead .r{color:var(--accent)}
 .mbody{padding:0 12px 12px}
@@ -71,7 +116,7 @@ button{font:inherit;color:inherit}
 .mnote{font-size:12px;color:var(--warn);margin:0 2px 10px}
 
 /* Item cards with chips */
-.item{padding:12px;border-radius:16px;background:#101c15;border:2px solid var(--line);margin-bottom:8px}
+.item{padding:12px;border-radius:16px;background:var(--item);border:2px solid var(--line);margin-bottom:8px}
 .item.on{background:var(--card2);border-color:var(--accent)}
 .itop{display:flex;align-items:center;gap:10px}
 .itop .emoji{font-size:28px;line-height:1}
@@ -80,20 +125,20 @@ button{font:inherit;color:inherit}
 .item.on .kc{color:var(--accent)}
 .guide{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
 .chips{display:flex;gap:8px;margin-top:10px}
-.ch{flex:1;min-width:0;height:48px;border-radius:12px;border:1px solid var(--line);background:#0e1b14;
+.ch{flex:1;min-width:0;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--deep);
   font-weight:700;font-size:16px;cursor:pointer}
 .ch:active{transform:scale(.96)}
-.ch.on{background:var(--accent);color:#04210f;border-color:var(--accent)}
-.ch small{display:block;font-size:10px;font-weight:500;opacity:.75;margin-top:-2px}
+.ch.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.ch small{display:block;font-size:12px;font-weight:600;opacity:.85;margin-top:-1px}
 
 /* Extra / forms */
 .extra{display:flex;gap:8px;margin-top:6px}
 .extra input,.field input{flex:1;min-width:0;height:48px;border-radius:14px;border:1px solid var(--line);
   background:var(--card);color:var(--text);padding:0 14px;font-size:16px;-webkit-user-select:text;user-select:text}
-.btn{height:48px;padding:0 18px;border-radius:14px;border:0;background:var(--accent);color:#04210f;
+.btn{height:48px;padding:0 18px;border-radius:14px;border:0;background:var(--accent);color:var(--on-accent);
   font-weight:700;cursor:pointer}
 .btn.ghost{background:var(--card);color:var(--text);border:1px solid var(--line)}
-.btn.danger{color:#ff7a7a}
+.btn.danger{color:var(--danger)}
 .tag{display:inline-flex;align-items:center;gap:6px;margin:8px 8px 0 0;padding:8px 12px;border-radius:999px;
   background:var(--card2);border:1px solid var(--line);font-size:14px}
 .tag button{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer}
@@ -107,7 +152,7 @@ button{font:inherit;color:inherit}
 .stat .l{font-size:12px;color:var(--muted)}
 .bars{position:relative;display:flex;gap:6px;align-items:flex-end;height:170px;margin:6px 0 4px;
   background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 8px 8px}
-.bars .zoneband{position:absolute;left:0;right:0;background:rgba(46,229,122,.12);
+.bars .zoneband{position:absolute;left:0;right:0;background:var(--zone2);
   border-top:1px dashed var(--accent-d);border-bottom:1px dashed var(--accent-d);pointer-events:none}
 .bcol{position:relative;flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;
   align-items:center;cursor:pointer}
@@ -119,7 +164,7 @@ button{font:inherit;color:inherit}
 .days div.today{color:var(--accent);font-weight:700}
 .mrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .mrow .nm{flex:0 0 120px;font-size:14px}
-.mrow .mb{flex:1;height:10px;background:#0e1b14;border-radius:6px;overflow:hidden}
+.mrow .mb{flex:1;height:10px;background:var(--deep);border-radius:6px;overflow:hidden}
 .mrow .mb i{display:block;height:100%;background:var(--accent-d);border-radius:6px}
 .mrow .val{flex:0 0 64px;text-align:right;font-size:14px;font-weight:700}
 h3{margin:18px 2px 6px;font-size:16px}
@@ -127,11 +172,11 @@ h3{margin:18px 2px 6px;font-size:16px}
 
 /* Bottom nav */
 nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;
-  padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(11,20,16,.92);
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--navbg);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)}
 nav button{flex:1;max-width:200px;height:52px;border-radius:16px;border:1px solid var(--line);
   background:var(--card);font-size:15px;font-weight:700;cursor:pointer}
-nav button.active{background:var(--accent);color:#04210f;border-color:var(--accent)}
+nav button.active{background:var(--card2);color:var(--accent);border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);
   background:var(--card2);border:1px solid var(--accent);padding:10px 16px;border-radius:12px;font-size:14px;
   opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}
@@ -188,11 +233,11 @@ const SECTIONS = [
     { id: 'a_egg',   name: 'Egg',                        emoji: '🥚', opts: N(80) },
     { id: 'a_nuts',  name: 'Nøtter (neve)',              emoji: '🥜', opts: N(250, [1, 2, 3]) },
   ]},
-  { id: 'dinner', name: 'Middag', emoji: '🍽️', items: [
-    { id: 'd_kyl',   name: 'Kylling + ris + grønnsaker', emoji: '🍛', opts: Z(700, 1000, 1300), guide: PLATE },
-    { id: 'd_laks',  name: 'Laks/ørret + poteter',   emoji: '🐟', opts: Z(650, 850, 1050), guide: PLATE },
-    { id: 'd_pasta', name: 'Pasta + kjøttsaus',      emoji: '🍝', opts: Z(750, 1000, 1300), guide: PLATE },
-    { id: 'd_wok',   name: 'Wok med kylling',        emoji: '🥘', opts: Z(700, 950, 1200), guide: PLATE },
+  { id: 'dinner', name: 'Middag', emoji: '🍽️', guide: PLATE, items: [
+    { id: 'd_kyl',   name: 'Kylling + ris + grønnsaker', emoji: '🍛', opts: Z(700, 1000, 1300) },
+    { id: 'd_laks',  name: 'Laks/ørret + poteter',   emoji: '🐟', opts: Z(650, 850, 1050) },
+    { id: 'd_pasta', name: 'Pasta + kjøttsaus',      emoji: '🍝', opts: Z(750, 1000, 1300) },
+    { id: 'd_wok',   name: 'Wok med kylling',        emoji: '🥘', opts: Z(700, 950, 1200) },
     { id: 'd_taco',  name: 'Taco (lefser)',          emoji: '🌮', opts: N(250) },
     { id: 'd_pizza', name: 'Pizza (skiver)',         emoji: '🍕', opts: N(280) },
   ]},
@@ -234,9 +279,9 @@ let db = load();
 function load() {
   try {
     const r = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (r && r.days) { r.profile = Object.assign({ name: '', goal: DEFAULT_GOAL }, r.profile); return r; }
+    if (r && r.days) { r.profile = Object.assign({ name: '', goal: DEFAULT_GOAL, theme: 'dark' }, r.profile); return r; }
   } catch (e) {}
-  return { profile: { name: '', goal: DEFAULT_GOAL }, days: {} };
+  return { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark' }, days: {} };
 }
 function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(db)); } catch (e) {} }
 const readDay = d => db.days[key(d)] || { items: {}, extra: [] };
@@ -245,6 +290,24 @@ function prune(d) {
   const k = key(d), day = db.days[k];
   if (day && !Object.keys(day.items).length && !day.extra.length) delete db.days[k];
 }
+
+/* ---- themes ---- */
+const THEMES = [
+  { id: 'dark',     name: 'Mørk',     dot: '#2ee57a', meta: '#0b1410' },
+  { id: 'light',    name: 'Lys',      dot: '#16a34a', meta: '#f2f7f3' },
+  { id: 'matchday', name: 'Matchday', dot: '#c6ff00', meta: '#000000' },
+  { id: 'slate',    name: 'Slate',    dot: '#5eead4', meta: '#0f1720' },
+  { id: 'red',      name: 'Rød',      dot: '#ff5a4e', meta: '#160d0d' },
+  { id: 'auto',     name: 'Auto',     dot: 'linear-gradient(90deg,#f2f7f3 50%,#0b1410 50%)', meta: null },
+];
+function applyTheme() {
+  let t = db.profile.theme || 'dark';
+  if (t === 'auto') t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  const th = THEMES.find(x => x.id === t), m = document.getElementById('themeMeta');
+  if (m && th && th.meta) m.setAttribute('content', th.meta);
+}
+applyTheme();
 
 /* ---- goal / zone ---- */
 const goal = () => db.profile.goal;
@@ -278,14 +341,12 @@ function dayLabel(d) {
 }
 
 function statusFor(total) {
-  const [zl, zh] = zone(), g = goal();
+  const g = goal(), zh = zone()[1];
   if (total === 0) return { cls: 'mer', text: 'Trykk på det du har spist 👇', sub: '' };
   const left = g - total;
-  const sub = left > 0 ? `Mangler ca ${fmtNum(left)} kcal` : '';
-  if (total < g * 0.75) return { cls: 'mer', text: 'Mer! 🔥', sub };
-  if (total < zl) return { cls: 'nesten', text: 'Nesten 💪', sub };
-  if (total <= zh) return { cls: 'ok', text: 'Mål nådd ✅', sub };
-  return { cls: 'ok', text: 'Mål nådd ✅', sub: 'Over sonen – mye energi i dag' };
+  if (total < g * 0.75) return { cls: 'mer', text: 'Mer! 🔥', sub: `Mangler ca ${fmtNum(left)} kcal` };
+  if (total < g) return { cls: 'nesten', text: 'Nesten 💪', sub: `Mangler ca ${fmtNum(left)} kcal` };
+  return { cls: 'ok', text: 'Mål nådd ✅', sub: total > zh ? 'Over sonen – mye energi i dag' : '' };
 }
 
 /* Favourites: foods logged most in the 30 days BEFORE the viewed day come first
@@ -324,14 +385,17 @@ function dayView() {
 
   const meals = SECTIONS.map(s => {
     const sub = sectionTotal(day, s), isOpen = openId === s.id;
+    const picked = s.items.filter(i => day.items[i.id] && optKcal(i, day.items[i.id]))
+      .map(i => `${i.name} (${day.items[i.id]})`).join(' · ');
     const body = isOpen ? `<div class="mbody">
       <div class="tools"><button class="btn ghost" data-act="copyYesterday" data-id="${s.id}">↻ Som i går</button>
         ${sub ? `<button class="btn ghost danger" data-act="clearSection" data-id="${s.id}">Nullstill</button>` : ''}</div>
       ${s.note ? `<div class="mnote">${s.note}</div>` : ''}
+      ${s.guide ? `<div class="mguide">${s.guide}</div>` : ''}
       ${byFav(s.items, counts).map(i => itemCard(i, day)).join('')}
       <button class="btn done" data-act="next" data-id="${s.id}">Ferdig ✓</button></div>` : '';
     return `<section class="meal ${sub ? 'done' : ''}">
-      <div class="mhead" data-act="open" data-id="${s.id}"><h2>${s.emoji} ${s.name}</h2>
+      <div class="mhead" data-act="open" data-id="${s.id}"><div class="t"><h2>${s.emoji} ${s.name}</h2>${picked && !isOpen ? `<div class="msum">${picked}</div>` : ''}</div>
         <div class="r">${sub ? `✅ ${fmtNum(sub)}` : (isOpen ? '▾' : '›')}</div></div>${body}</section>`;
   }).join('');
 
@@ -370,7 +434,7 @@ function weekView() {
   const totals = days.map(d => dayTotal(readDay(d)));
   const logged = days.filter((d, i) => totals[i] > 0);
   const avg = logged.length ? totals.reduce((a, b) => a + b, 0) / logged.length : 0;
-  const inZone = totals.filter(t => t >= zl).length;
+  const inZone = totals.filter(t => t >= goal()).length;
   const names = ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'];
   const sun = days[6];
   const isCurrent = key(mondayOf(today)) === key(mon);
@@ -402,14 +466,15 @@ function weekView() {
       <button class="iconbtn" data-act="weekShift" data-n="7" aria-label="Neste uke" ${isCurrent ? 'disabled' : ''}>›</button>
     </div>
     <div class="cards">
-      <div class="stat"><div class="v">${fmtNum(avg)}</div><div class="l">snitt kcal / dag (${logged.length} dager logget)</div></div>
-      <div class="stat"><div class="v">${inZone} / 7</div><div class="l">dager med mål nådd (${fmtNum(zl)}+)</div></div>
+      <div class="stat"><div class="v">${fmtNum(avg)}</div><div class="l">snitt kcal / dag (${logged.length} ${logged.length === 1 ? 'dag' : 'dager'} logget)</div></div>
+      <div class="stat"><div class="v">${inZone} / 7</div><div class="l">dager med mål nådd (${fmtNum(goal())}+)</div></div>
     </div>
     <div class="bars">
       <div class="zoneband" style="bottom:calc(${zl / max * 100}% * .92 + 8px);height:calc(${(zh - zl) / max * 100}% * .92)"></div>
       ${bars}
     </div>
     <div class="days">${labels}</div>
+    ${logged.length ? '' : '<p class="note">Ingen data ennå denne uka. Logg måltider under «I dag».</p>'}
     <h3>Snitt per måltid (kcal)</h3>
     <div>${mrows}</div>
     <p class="note">Snitt regnes kun over dager med noe logget. Trykk på en søyle for å åpne dagen.</p>`;
@@ -422,11 +487,13 @@ function meView() {
       <input id="pname" type="text" maxlength="30" value="${esc(db.profile.name)}" placeholder="Valgfritt"></div>
     <div class="field"><label for="pgoal">Mål per dag (kcal)</label>
       <input id="pgoal" type="number" inputmode="numeric" min="1000" max="8000" step="100" value="${goal()}"></div>
-    <p class="note">Målsonen er mål ±${ZONE_HALF} kcal. Standard er ${fmtNum(DEFAULT_GOAL)}.</p>
-    <h3>Porsjonsguide</h3>
+    <p class="note">Det grønne feltet på stolpen er mål ±${ZONE_HALF} kcal. Standard er ${fmtNum(DEFAULT_GOAL)}.</p>
+    <h3>Utseende</h3>
+    <div class="themes">${THEMES.map(t => `<button class="themebtn ${(db.profile.theme || 'dark') === t.id ? 'on' : ''}" data-act="theme" data-t="${t.id}"><i style="background:${t.dot}"></i>${t.name}</button>`).join('')}</div>
+    <details><summary>Porsjonsguide</summary>
     <p class="note"><b>Havregrøt:</b> vi har to skåler. Havregryn går rett fra posen i skåla, med varmt vann og syltetøy. Liten skål = 55 g (≈ 300 kcal). Stor skål = 150 g (≈ 650 kcal). Vil du ha mer eller mindre enn en full skål, velg nærmeste størrelse eller legg til resten under «Annet».</p>
     <p class="note">• Havregrøt: Liten skål 55 g / Stor skål 150 g tørr havregryn<br>• Frokostblanding (med vann): Liten skål ≈ 55 g / Stor skål ≈ 150 g (foreløpig)<br>• Yoghurt: Liten skål ≈ 2 dl / Stor skål ≈ 4 dl (foreløpig). Vanlig ≈ 75 kcal/dl, gresk ≈ 120 kcal/dl<br>• Tallerkenmat: Vanlig = en full tallerken, Liten ≈ ⅔, Stor ≈ 1⅓</p>
-    <p class="note">Tips: bruk alltid de samme skålene, da blir Liten/Stor riktig hver gang.</p>
+    <p class="note">Tips: bruk alltid de samme skålene, da blir Liten/Stor riktig hver gang.</p></details>
     <h3>Sikkerhetskopi</h3>
     <p class="note">Alt lagres kun i denne nettleseren på denne enheten. Ingen konto, ingen server. Ta backup av og til, eller bruk filen for å flytte data til en annen enhet (f.eks. PC).</p>
     <div class="extra">
@@ -513,11 +580,12 @@ document.addEventListener('click', e => {
     snap(); const day = writeDay(view.date); day.extra.splice(Number(el.dataset.idx), 1);
     prune(view.date); save(); keepScroll(render); toast('Fjernet', true); return;
   }
+  if (a === 'theme') { db.profile.theme = el.dataset.t; save(); applyTheme(); render(); return; }
   if (a === 'export') { exportData(); return; }
   if (a === 'import') { document.getElementById('importFile').click(); return; }
   if (a === 'wipe') {
     if (confirm('Slette ALLE data på denne enheten? Dette kan ikke angres.')) {
-      db = { profile: { name: '', goal: DEFAULT_GOAL }, days: {} }; save(); render(); toast('Alt er slettet');
+      db = { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark' }, days: {} }; save(); applyTheme(); render(); toast('Alt er slettet');
     }
   }
 });

@@ -19,14 +19,14 @@
 | Status | Mer! / Nesten / Mål nådd, plus "Mangler ca X kcal" |
 | Week view | Avg kcal/day, days with goal reached, bar per day (tap to open), avg per meal |
 | Portion guide | Size hints (grams of dry oats etc.) under the chips and a calibration guide in the Meg tab |
-| Profile | Name and daily goal (zone = goal ±500) |
+| Profile | Name, daily goal (green band = goal ±500) and theme (Mørk, Lys, Matchday, Slate, Rød, Auto) |
 | Backup | Export / import JSON (merge by date), wipe all data |
 | Offline | Service worker + manifest + iPhone home-screen icon |
 
 ## Data model
 
 ```json
-{ "profile": { "name": "", "goal": 4000 },
+{ "profile": { "name": "", "goal": 4000, "theme": "dark" },
   "days": { "2026-11-23": { "items": { "b_brod": "4", "d_kyl": "Stor" }, "extra": [300] } } }
 ```
 

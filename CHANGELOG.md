@@ -23,6 +23,8 @@ Authoritative history of what has shipped.
 - Portion guide: size hints under Liten/Vanlig/Stor (≈ 50/75/100 g dry oats, plate rule for dinner) and a "weigh your own bowls once" guide in the Meg tab
 - Havregrøt matches the family's real bowls: Liten skål = 55 g dry oats (~300 kcal), Stor skål = 150 g (~650 kcal), oats go raw from the bag with hot water + jam; no middle size. Skolelunsj oats + nuts: 475 / 850
 - Frokostblanding and yoghurt use the same two bowls (provisional gram/dl values); yoghurt split into "vanlig" and "Gresk"
+- Design pass (from a UX critique): closed meals show what was logged ("Egg (3) · Havregrøt (Stor)"); status wording now follows the goal (Mer! / Nesten / Mål nådd at the goal, the ±500 zone is only the green band); week card counts days at/above the goal; plate guide shown once per meal; solid sticky bar with fade; "I dag" capitalisation fixed; bigger chip kcal text; nav active state no longer the same as "selected"; "1 dag logget"; empty-week hint; collapsible porsjonsguide
+- Progress-ring app icon (SVG favicon + 180/512 PNG, maskable) and 6 themes in the Meg tab: Mørk, Lys, Matchday, Slate, Rød, Auto (follows the phone)
 - Storage key changed to `simplecal.v2` (v1 data is not migrated; the menu ids changed)
 
 ## v1 — initial release

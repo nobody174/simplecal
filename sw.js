@@ -1,6 +1,6 @@
 /* SimpleCal service worker: offline-first cache of the app shell */
-const CACHE = 'simplecal-v2-1';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png'];
+const CACHE = 'simplecal-v2-2';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png', './icon.svg'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
 });
