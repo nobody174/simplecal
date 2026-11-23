@@ -33,10 +33,10 @@ Item ids map to the `SECTIONS` config. kcal is computed at read time, so changin
 2. Repo → Settings → Pages → Source: `main` / root.
 3. Open `https://<user>.github.io/simplecal/` on the phone → Share → **Add to Home Screen**.
 
-## Roadmap ideas
+## Planning
 
-- PWA manifest + service worker (offline, proper app icon)
-- Weight/energy/sleep quick-rating per day
-- Editable menu in the UI instead of the config block
-- Optional protein estimate per item
-- Shared sync between son's and dad's phone (e.g. Cloudflare KV)
+See [ROADMAP.md](ROADMAP.md) (someday ideas), [BACKLOG.md](BACKLOG.md) (active todo) and [CHANGELOG.md](CHANGELOG.md) (history).
+
+## License
+
+All rights reserved © 2026 nobody174. Free to use the app; please don't copy, modify or redistribute the code without asking.
