@@ -8,3 +8,5 @@ Active todo list: bugs, fixes, adjustments and things to look into — everythin
 - Check the kcal values with the physio/dietitian
 - Review the menu with him: foods he doesn't eat, missing favourites
 - Check that offline works after "Add to Home Screen" (service worker needs https)
+- Favourites: put the most-logged foods first in each meal
+- Confirm the frokostblanding kcal (200/300/450) with him — assumed dry cereal/muesli with water

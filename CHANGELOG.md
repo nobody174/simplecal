@@ -12,6 +12,12 @@ Authoritative history of what has shipped.
 - Local profile (name, daily goal); zone = goal ±500
 - Backup (export/import/wipe) moved to the "Meg" tab
 - Offline support (service worker) + web manifest + iPhone home-screen icon
+- Sticky compact total bar, so the day total stays visible while scrolling
+- Meal block stays open while picking (it used to jump to the next meal after the first tap)
+- "Frokostblanding + varmt vann" (he uses hot water, not milk): 200/300/450 kcal
+- "Ferdig ✓" button closes a meal and opens the next one
+- Undo: "Angre" toast after every change
+- Removed kcal ranges from untouched cards (kcal shows once a chip is picked)
 - Storage key changed to `simplecal.v2` (v1 data is not migrated; the menu ids changed)
 
 ## v1 — initial release
