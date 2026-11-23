@@ -19,6 +19,7 @@
 | Status | Mer! / Nesten / Mål nådd, plus "Mangler ca X kcal" |
 | Week view | Avg kcal/day, days with goal reached, bar per day (tap to open), avg per meal |
 | Portion guide | Size hints (grams of dry oats etc.) under the chips and a calibration guide in the Meg tab |
+| First run | One-time welcome page (name, goal, theme), then straight into the day view. No entry page on later visits |
 | Profile | Name, daily goal (green band = goal ±500) and theme (Mørk, Lys, Matchday, Slate, Rød, Auto) |
 | Backup | Export / import JSON (merge by date), wipe all data |
 | Offline | Service worker + manifest + iPhone home-screen icon |

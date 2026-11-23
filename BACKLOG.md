@@ -10,3 +10,4 @@ Active todo list: bugs, fixes, adjustments and things to look into — everythin
 - On the real https site: confirm "Add to Home Screen" works and it opens offline (offline/service worker already verified in a Chrome emulation on localhost)
 - Weigh the real amounts in the small and big bowl for frokostblanding (dry g) and yoghurt (g, both vanlig and Gresk) and replace the provisional values (cereal 55/150 g, yoghurt 2/4 dl)
 - Tune the menu from real use: watch what he actually logs (especially Etter skole) and add/remove foods
+- Check the iPhone launch screen (splash) on a real phone: they only show when started from the home screen, and are dark-only. Re-add the app to the home screen after updating

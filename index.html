@@ -16,6 +16,17 @@ License: All rights reserved © 2026 nobody174
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-startup-image" href="splash/s-393x852@3.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-430x932@3.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-390x844@3.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-428x926@3.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-375x812@3.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-414x896@3.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-414x896@2.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-375x667@2.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-414x736@3.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-402x874@3.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/s-440x956@3.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
 <title>SimpleCal</title>
 <style>
 :root{
@@ -75,7 +86,16 @@ button{font:inherit;color:inherit}
   border-radius:18px;padding:10px 14px 12px;margin-bottom:22px;box-shadow:0 6px 14px var(--shadow)}
 .summary::after{content:'';position:absolute;left:-2px;right:-2px;top:100%;height:16px;background:linear-gradient(var(--bg),transparent);pointer-events:none}
 body::before{content:'';position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--bg);z-index:4}
-.hello{font-size:13px;color:var(--muted);margin:0 2px 8px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;margin:0 2px 8px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:.2px}
+.hello{font-size:13px;color:var(--muted)}
+.welcome{min-height:calc(100vh - 30px);display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center;padding:10px 0 30px}
+.welcome .wlogo{display:flex;justify-content:center;margin-bottom:2px}
+.welcome h1{margin:0;font-size:40px;font-weight:800;letter-spacing:.3px}
+.welcome .tag2{margin:0 auto 6px;max-width:300px;font-size:16px;color:var(--muted);line-height:1.35}
+.welcome .field{text-align:left;margin-bottom:6px}
+.welcome .themes{justify-content:center}
+.welcome .btn.big2{height:56px;font-size:18px;width:100%;margin-top:6px}
 .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .big{font-size:34px;font-weight:800;line-height:1}
 .big span{font-size:13px;font-weight:500;color:var(--muted);margin-left:5px}
@@ -279,9 +299,13 @@ let db = load();
 function load() {
   try {
     const r = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (r && r.days) { r.profile = Object.assign({ name: '', goal: DEFAULT_GOAL, theme: 'dark' }, r.profile); return r; }
+    if (r && r.days) {
+      r.profile = Object.assign({ name: '', goal: DEFAULT_GOAL, theme: 'dark' }, r.profile);
+      if (r.profile.welcomed === undefined) r.profile.welcomed = Object.keys(r.days).length > 0 || !!r.profile.name;
+      return r;
+    }
   } catch (e) {}
-  return { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark' }, days: {} };
+  return { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark', welcomed: false }, days: {} };
 }
 function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(db)); } catch (e) {} }
 const readDay = d => db.days[key(d)] || { items: {}, extra: [] };
@@ -324,11 +348,13 @@ const dayTotal = day => SECTIONS.reduce((sum, s) => sum + sectionTotal(day, s), 
 
 /* ---- view state ---- */
 const today = startOfDay(new Date());
-const view = { tab: 'day', date: today, open: undefined };  // open: undefined = auto, null = none
+const view = { tab: db.profile.welcomed ? 'day' : 'welcome', date: today, open: undefined, wdraft: null };
+const logoSvg = size => `<svg width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="30" fill="none" stroke="var(--card2)" stroke-width="9"/><circle cx="50" cy="50" r="30" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="160.2 188.5" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="6.5" fill="var(--accent)"/></svg>`;  // open: undefined = auto, null = none
 const $app = document.getElementById('app');
 
 function render() {
-  $app.innerHTML = view.tab === 'day' ? dayView() : view.tab === 'week' ? weekView() : meView();
+  $app.innerHTML = view.tab === 'welcome' ? welcomeView() : view.tab === 'day' ? dayView() : view.tab === 'week' ? weekView() : meView();
+  document.querySelector('nav').style.display = view.tab === 'welcome' ? 'none' : '';
   ['day', 'week', 'me'].forEach(t => document.getElementById('tab-' + t).classList.toggle('active', view.tab === t));
 }
 
@@ -411,7 +437,7 @@ function dayView() {
       <div>${extras}</div></div>` : ''}</section>`;
 
   return `
-    ${db.profile.name ? `<div class="hello">Hei, ${esc(db.profile.name)} 👋</div>` : ''}
+    <div class="brandrow"><div class="brand">${logoSvg(28)}<span>SimpleCal</span></div>${db.profile.name ? `<div class="hello">Hei, ${esc(db.profile.name)} 👋</div>` : ''}</div>
     <div class="datebar">
       <button class="iconbtn" data-act="shift" data-n="-1" aria-label="Forrige dag">‹</button>
       <div class="label">${dayLabel(d)}</div>
@@ -426,6 +452,22 @@ function dayView() {
       </div>
     </div>
     ${meals}${extraMeal}`;
+}
+
+function welcomeView() {
+  const d = view.wdraft || { name: db.profile.name, goal: goal() };
+  return `<div class="welcome">
+    <div class="wlogo">${logoSvg(150)}</div>
+    <h1>SimpleCal</h1>
+    <p class="tag2">Hold styr på kcal. Ett trykk per måltid, og du ser dagen din med en gang.</p>
+    <div class="field"><label for="wname">Navn (valgfritt)</label>
+      <input id="wname" type="text" maxlength="30" value="${esc(d.name || '')}" placeholder="Hva skal vi kalle deg?"></div>
+    <div class="field"><label for="wgoal">Mål per dag (kcal)</label>
+      <input id="wgoal" type="number" inputmode="numeric" min="1000" max="8000" step="100" value="${d.goal}"></div>
+    <div class="themes">${THEMES.map(t => `<button class="themebtn ${(db.profile.theme || 'dark') === t.id ? 'on' : ''}" data-act="wtheme" data-t="${t.id}"><i style="background:${t.dot}"></i>${t.name}</button>`).join('')}</div>
+    <button class="btn big2" data-act="start">Kom i gang</button>
+    <p class="note">Alt lagres kun på denne telefonen. Ingen konto, ingen server.</p>
+  </div>`;
 }
 
 function weekView() {
@@ -580,15 +622,27 @@ document.addEventListener('click', e => {
     snap(); const day = writeDay(view.date); day.extra.splice(Number(el.dataset.idx), 1);
     prune(view.date); save(); keepScroll(render); toast('Fjernet', true); return;
   }
+  if (a === 'wtheme') { view.wdraft = readWelcome(); db.profile.theme = el.dataset.t; save(); applyTheme(); render(); return; }
+  if (a === 'start') {
+    const d = readWelcome();
+    if (!(d.goal >= 1000 && d.goal <= 8000)) { toast('Velg mål mellom 1000 og 8000'); return; }
+    db.profile.name = d.name; db.profile.goal = d.goal; db.profile.welcomed = true; save();
+    view.tab = 'day'; view.wdraft = null; render(); window.scrollTo(0, 0); return;
+  }
   if (a === 'theme') { db.profile.theme = el.dataset.t; save(); applyTheme(); render(); return; }
   if (a === 'export') { exportData(); return; }
   if (a === 'import') { document.getElementById('importFile').click(); return; }
   if (a === 'wipe') {
     if (confirm('Slette ALLE data på denne enheten? Dette kan ikke angres.')) {
-      db = { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark' }, days: {} }; save(); applyTheme(); render(); toast('Alt er slettet');
+      db = { profile: { name: '', goal: DEFAULT_GOAL, theme: 'dark', welcomed: false }, days: {} }; save(); applyTheme(); view.tab = 'welcome'; view.wdraft = null; render(); window.scrollTo(0, 0);
     }
   }
 });
+
+function readWelcome() {
+  const n = document.getElementById('wname'), g = document.getElementById('wgoal');
+  return { name: n ? n.value.trim().slice(0, 30) : db.profile.name, goal: g ? Math.round(Number(g.value)) : goal() };
+}
 
 function openNext(id) {
   const ids = SECTIONS.map(x => x.id).concat('extra'), i = ids.indexOf(id);
