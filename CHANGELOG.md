@@ -19,6 +19,8 @@ Authoritative history of what has shipped.
 - Undo: "Angre" toast after every change
 - Removed kcal ranges from untouched cards (kcal shows once a chip is picked)
 - Favourites: within each meal, the foods he logged most in the previous 30 days come first (ties keep menu order; today's own taps never reorder the list)
+- Menu trimmed to 5 meals: removed Før trening, Etter trening, Drikke and Boostere; added Etter skole (matboks, wrap, peanøttsmør-brød, nøtter, müslibar, sjokolademelk, proteinshake). "Annet" stays
+- Portion guide: size hints under Liten/Vanlig/Stor (≈ 50/75/100 g dry oats, plate rule for dinner) and a "weigh your own bowls once" guide in the Meg tab
 - Storage key changed to `simplecal.v2` (v1 data is not migrated; the menu ids changed)
 
 ## v1 — initial release

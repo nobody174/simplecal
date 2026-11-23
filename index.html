@@ -78,6 +78,7 @@ button{font:inherit;color:inherit}
 .itop .name{flex:1;font-size:16px;font-weight:600;line-height:1.2}
 .itop .kc{font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
 .item.on .kc{color:var(--accent)}
+.guide{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.35}
 .chips{display:flex;gap:8px;margin-top:10px}
 .ch{flex:1;min-width:0;height:48px;border-radius:12px;border:1px solid var(--line);background:#0e1b14;
   font-weight:700;font-size:16px;cursor:pointer}
@@ -158,61 +159,51 @@ const ZONE_HALF = 500;                     // zone = goal ± 500
 const N = (per, counts = [2, 3, 4, 5]) => counts.map(n => ({ l: String(n), kcal: n * per }));
 const Z = (l, v, s) => [{ l: 'Liten', kcal: l }, { l: 'Vanlig', kcal: v }, { l: 'Stor', kcal: s }];
 const C = (...a) => a.map(([l, kcal]) => ({ l, kcal }));
+/* Size guides, shown under the chips and in the "Meg" tab. Rough; see README "Portion guide". */
+const OATS = 'Tørr havregryn i skåla, før du heller på vann/melk: Liten ≈ 50 g (1½ dl) · Vanlig ≈ 75 g (2 dl) · Stor ≈ 100 g (3 dl)';
+const CEREAL = 'Tørr frokostblanding/müsli: Liten ≈ 50 g · Vanlig ≈ 80 g · Stor ≈ 120 g';
+const YOG = 'Yoghurt/skyr + müsli: Liten 2 dl + 40 g · Vanlig 3 dl + 60 g · Stor 4 dl + 85 g';
+const PLATE = 'Vanlig = en full tallerken. Liten ≈ ⅔ av den · Stor ≈ 1⅓ tallerken';
 
 const SECTIONS = [
   { id: 'breakfast', name: 'Frokost', emoji: '🍳', items: [
     { id: 'b_brod',  name: 'Brødskiver med pålegg',  emoji: '🍞', opts: N(150) },
     { id: 'b_egg',   name: 'Egg',                    emoji: '🥚', opts: N(80) },
-    { id: 'b_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700) },
-    { id: 'b_flak',  name: 'Frokostblanding + varmt vann', emoji: '🥣', opts: Z(200, 300, 450) },
-    { id: 'b_yog',   name: 'Yoghurt + müsli',        emoji: '🍨', opts: Z(300, 450, 600) },
+    { id: 'b_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700), guide: OATS },
+    { id: 'b_flak',  name: 'Frokostblanding + varmt vann', emoji: '🥣', opts: Z(200, 300, 450), guide: CEREAL },
+    { id: 'b_yog',   name: 'Yoghurt + müsli',        emoji: '🍨', opts: Z(300, 450, 600), guide: YOG },
   ]},
   { id: 'lunch', name: 'Skolelunsj', emoji: '🎒', items: [
     { id: 'l_toast', name: 'Toast skinke/ost',       emoji: '🥪', opts: N(210) },
     { id: 'l_brod',  name: 'Matpakke-brødskiver',    emoji: '🍞', opts: N(150) },
     { id: 'l_rund',  name: 'Rundstykke med pålegg',  emoji: '🥖', opts: N(250, [1, 2, 3]) },
     { id: 'l_wrap',  name: 'Wrap med kylling',       emoji: '🌯', opts: N(350, [1, 2, 3]) },
-    { id: 'l_havre', name: 'Havregryn + nøtter + syltetøy', emoji: '🥜', opts: Z(500, 750, 950) },
+    { id: 'l_havre', name: 'Havregryn + nøtter + syltetøy', emoji: '🥜', opts: Z(500, 750, 950), guide: OATS + ' (+ en neve nøtter)' },
   ]},
-  { id: 'pre', name: 'Før trening', emoji: '⚽', items: [
-    { id: 'p_pb',    name: 'Brødskive med peanøttsmør', emoji: '🥜', opts: N(200, [1, 2, 3]) },
-    { id: 'p_bar',   name: 'Müslibar',               emoji: '🍫', opts: N(200, [1, 2]) },
-    { id: 'p_nuts',  name: 'Nøtter (neve)',          emoji: '🥜', opts: N(250, [1, 2, 3]) },
-    { id: 'p_saft',  name: 'Saft / sportsdrikk (5 dl)', emoji: '🧃', opts: C(['1 stk', 100]) },
-  ]},
-  { id: 'post', name: 'Etter trening', emoji: '💪', items: [
-    { id: 'a_choc',  name: 'Sjokolademelk',          emoji: '🥛', opts: C(['3 dl', 250], ['5 dl', 400]) },
-    { id: 'a_shake', name: 'Proteinshake med melk',  emoji: '🥤', opts: C(['Vanlig', 350], ['Stor', 500]) },
-    { id: 'a_matb',  name: 'Kylling + ris (matboks)',emoji: '🍗', opts: Z(550, 750, 950) },
-    { id: 'a_wrap',  name: 'Wrap med kylling',       emoji: '🌯', opts: N(350, [1, 2, 3]) },
+  { id: 'after', name: 'Etter skole', emoji: '🏫', items: [
+    { id: 'a_matb',  name: 'Kylling + ris (matboks)',    emoji: '🍗', opts: Z(550, 750, 950), guide: PLATE },
+    { id: 'a_wrap',  name: 'Wrap med kylling',           emoji: '🌯', opts: N(350, [1, 2, 3]) },
+    { id: 'a_pb',    name: 'Brødskive med peanøttsmør',  emoji: '🥜', opts: N(200, [1, 2, 3]) },
+    { id: 'a_nuts',  name: 'Nøtter (neve)',              emoji: '🥜', opts: N(250, [1, 2, 3]) },
+    { id: 'a_bar',   name: 'Müslibar',                   emoji: '🍫', opts: N(200, [1, 2]) },
+    { id: 'a_choc',  name: 'Sjokolademelk',              emoji: '🥛', opts: C(['3 dl', 250], ['5 dl', 400]) },
+    { id: 'a_shake', name: 'Proteinshake med melk',      emoji: '🥤', opts: C(['Vanlig', 350], ['Stor', 500]) },
   ]},
   { id: 'dinner', name: 'Middag', emoji: '🍽️', items: [
-    { id: 'd_kyl',   name: 'Kylling + ris + grønnsaker', emoji: '🍛', opts: Z(700, 1000, 1300) },
-    { id: 'd_laks',  name: 'Laks/ørret + poteter',   emoji: '🐟', opts: Z(650, 850, 1050) },
-    { id: 'd_pasta', name: 'Pasta + kjøttsaus',      emoji: '🍝', opts: Z(750, 1000, 1300) },
-    { id: 'd_wok',   name: 'Wok med kylling',        emoji: '🥘', opts: Z(700, 950, 1200) },
+    { id: 'd_kyl',   name: 'Kylling + ris + grønnsaker', emoji: '🍛', opts: Z(700, 1000, 1300), guide: PLATE },
+    { id: 'd_laks',  name: 'Laks/ørret + poteter',   emoji: '🐟', opts: Z(650, 850, 1050), guide: PLATE },
+    { id: 'd_pasta', name: 'Pasta + kjøttsaus',      emoji: '🍝', opts: Z(750, 1000, 1300), guide: PLATE },
+    { id: 'd_wok',   name: 'Wok med kylling',        emoji: '🥘', opts: Z(700, 950, 1200), guide: PLATE },
     { id: 'd_taco',  name: 'Taco (lefser)',          emoji: '🌮', opts: N(250) },
     { id: 'd_pizza', name: 'Pizza (skiver)',         emoji: '🍕', opts: N(280) },
   ]},
   { id: 'evening', name: 'Kveldsmat', emoji: '🌙', items: [
-    { id: 'e_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700) },
+    { id: 'e_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700), guide: OATS },
     { id: 'e_toast', name: 'Toast ost/skinke',       emoji: '🥪', opts: N(210) },
     { id: 'e_egg',   name: 'Egg',                    emoji: '🥚', opts: N(80) },
     { id: 'e_brod',  name: 'Brødskiver',             emoji: '🍞', opts: N(150) },
-    { id: 'e_rest',  name: 'Rester fra middag',      emoji: '🍗', opts: Z(450, 650, 850) },
-    { id: 'e_skyr',  name: 'Skyr/yoghurt + müsli',   emoji: '🍨', opts: Z(300, 450, 600) },
-  ]},
-  { id: 'drink', name: 'Drikke', emoji: '🥛', note: '⚠️ Sjekk at saft og smoothie ikke har appelsin.', items: [
-    { id: 'k_melk',  name: 'Melk (glass)',           emoji: '🥛', opts: N(110, [1, 2, 3, 4]) },
-    { id: 'k_kakao', name: 'Kakao',                  emoji: '☕', opts: N(150, [1, 2, 3]) },
-    { id: 'k_eple',  name: 'Eplejuice (glass)',      emoji: '🧃', opts: N(90, [1, 2, 3]) },
-    { id: 'k_smoo',  name: 'Smoothie',               emoji: '🥤', opts: C(['Vanlig', 350], ['Stor', 500]) },
-  ]},
-  { id: 'boost', name: 'Boostere', emoji: '⚡', items: [
-    { id: 'x_nuts',  name: 'Nøtter (neve)',          emoji: '🥜', opts: N(250, [1, 2, 3]) },
-    { id: 'x_smor',  name: 'Ekstra smør/olje på maten', emoji: '🧈', opts: C(['1 stk', 100]) },
-    { id: 'x_ost',   name: 'Ostebiter',              emoji: '🧀', opts: N(100, [1, 2, 3]) },
-    { id: 'x_rosin', name: 'Rosiner / tørket frukt', emoji: '🍇', opts: N(150, [1, 2]) },
+    { id: 'e_rest',  name: 'Rester fra middag',      emoji: '🍗', opts: Z(450, 650, 850), guide: PLATE },
+    { id: 'e_skyr',  name: 'Skyr/yoghurt + müsli',   emoji: '🍨', opts: Z(300, 450, 600), guide: YOG },
   ]},
 ];
 /* ================================================================== */
@@ -320,7 +311,7 @@ function itemCard(item, day) {
   }).join('');
   return `<div class="item ${sel ? 'on' : ''}">
     <div class="itop"><span class="emoji">${item.emoji}</span><span class="name">${item.name}</span><span class="kc">${hint}</span></div>
-    <div class="chips">${chips}</div></div>`;
+    <div class="chips">${chips}</div>${item.guide && !sel ? `<div class="guide">${item.guide}</div>` : ''}</div>`;
 }
 
 function dayView() {
@@ -432,6 +423,10 @@ function meView() {
     <div class="field"><label for="pgoal">Mål per dag (kcal)</label>
       <input id="pgoal" type="number" inputmode="numeric" min="1000" max="8000" step="100" value="${goal()}"></div>
     <p class="note">Målsonen er mål ±${ZONE_HALF} kcal. Standard er ${fmtNum(DEFAULT_GOAL)}.</p>
+    <h3>Porsjonsguide</h3>
+    <p class="note"><b>Skåler (havregrøt, frokostblanding):</b> mål én gang! Hell den mengden tørr havregryn du pleier å ta i den lille skåla, og vei den på kjøkkenvekta. Gjør det samme med den store. Bruk deretter nærmeste størrelse: ≈ 50 g = Liten, ≈ 75 g = Vanlig, ≈ 100 g = Stor. (1 dl havregryn ≈ 35 g, så et målebeger går også fint.)</p>
+    <p class="note">• Havregrøt: 50 / 75 / 100 g tørr havregryn<br>• Frokostblanding (med vann): 50 / 80 / 120 g<br>• Yoghurt/skyr + müsli: 2 dl + 40 g / 3 dl + 60 g / 4 dl + 85 g<br>• Tallerkenmat: Vanlig = en full tallerken, Liten ≈ ⅔, Stor ≈ 1⅓</p>
+    <p class="note">Tips: når du vet hva skålene dine rommer, bruk alltid de samme. Da blir Liten/Vanlig/Stor riktig hver gang.</p>
     <h3>Sikkerhetskopi</h3>
     <p class="note">Alt lagres kun i denne nettleseren på denne enheten. Ingen konto, ingen server. Ta backup av og til, eller bruk filen for å flytte data til en annen enhet (f.eks. PC).</p>
     <div class="extra">

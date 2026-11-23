@@ -13,11 +13,12 @@
 
 | Area | What it does |
 |---|---|
-| Day view | Date navigation, total vs. goal bar, 8 collapsible meal blocks in day order |
+| Day view | Date navigation, total vs. goal bar, 5 collapsible meal blocks in day order (Frokost, Skolelunsj, Etter skole, Middag, Kveldsmat) + Annet |
 | Portions | Chips on each card: numbers (`2 3 4 5`) for countable foods, `Liten / Vanlig / Stor` for plate meals. Tap again to remove |
 | Shortcuts | Most-logged foods float to the top of each meal; "↻ Som i går" copies yesterday's choices for a meal; "Annet" adds any kcal |
 | Status | Mer! / Nesten / Mål nådd, plus "Mangler ca X kcal" |
 | Week view | Avg kcal/day, days with goal reached, bar per day (tap to open), avg per meal |
+| Portion guide | Size hints (grams of dry oats etc.) under the chips and a calibration guide in the Meg tab |
 | Profile | Name and daily goal (zone = goal ±500) |
 | Backup | Export / import JSON (merge by date), wipe all data |
 | Offline | Service worker + manifest + iPhone home-screen icon |
