@@ -13,6 +13,8 @@ License: All rights reserved © 2026 nobody174
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SimpleCal">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>SimpleCal</title>
 <style>
 :root{
@@ -37,48 +39,61 @@ button{font:inherit;color:inherit}
 .iconbtn[disabled]{opacity:.3}
 
 /* Summary */
-.summary{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:18px}
+.summary{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:16px}
+.hello{font-size:13px;color:var(--muted);margin-bottom:4px}
 .big{font-size:44px;font-weight:800;line-height:1}
 .big span{font-size:16px;font-weight:500;color:var(--muted);margin-left:6px}
-.status{margin:6px 0 14px;font-size:15px;color:var(--muted)}
-.status.ok{color:var(--accent)}
+.status{margin:8px 0 14px;font-size:17px;font-weight:700}
+.status small{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-top:2px}
+.status.mer{color:var(--warn)} .status.nesten{color:var(--blue)} .status.ok{color:var(--accent)}
 .track{position:relative;height:20px;background:#0e1b14;border-radius:10px;overflow:hidden}
 .zone{position:absolute;top:0;bottom:0;background:rgba(46,229,122,.18);
   border-left:1px dashed var(--accent-d);border-right:1px dashed var(--accent-d)}
 .fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--accent-d),var(--accent));
   border-radius:10px;transition:width .25s}
 .fill.over{background:linear-gradient(90deg,#2a7fd0,var(--blue))}
-.scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
 
-/* Meal sections */
-.section{margin-bottom:20px}
-.sechead{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 8px}
-.sechead h2{margin:0;font-size:18px}
-.sechead .sub{font-size:13px;color:var(--muted)}
-.sechead .sub b{color:var(--text)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.item{position:relative;min-height:92px;padding:12px;border-radius:16px;background:var(--card);
-  border:2px solid var(--line);cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;
-  transition:transform .08s,background .15s,border-color .15s}
-.item:active{transform:scale(.97)}
-.item .emoji{font-size:26px;line-height:1}
-.item .name{font-size:14px;font-weight:600;line-height:1.2;margin-top:6px}
-.item .kcal{font-size:12px;color:var(--muted);margin-top:2px}
+/* Meal accordion */
+.meal{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:10px;overflow:hidden}
+.meal.done{border-color:var(--accent-d)}
+.mhead{display:flex;align-items:center;justify-content:space-between;min-height:62px;padding:0 16px;cursor:pointer}
+.mhead:active{background:var(--card2)}
+.mhead h2{margin:0;font-size:18px}
+.mhead .r{font-size:15px;color:var(--muted);font-weight:700}
+.meal.done .mhead .r{color:var(--accent)}
+.mbody{padding:0 12px 12px}
+.tools{display:flex;gap:8px;margin:0 0 10px}
+.tools .btn{height:40px;font-size:14px;padding:0 14px}
+.mnote{font-size:12px;color:var(--warn);margin:0 2px 10px}
+
+/* Item cards with chips */
+.item{padding:12px;border-radius:16px;background:#101c15;border:2px solid var(--line);margin-bottom:8px}
 .item.on{background:var(--card2);border-color:var(--accent)}
-.item.on::after{content:"✓";position:absolute;top:8px;right:10px;font-size:18px;font-weight:800;color:var(--accent)}
-.chip{position:absolute;right:8px;bottom:8px;padding:6px 10px;border-radius:999px;border:1px solid var(--accent);
-  background:#0e1b14;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer}
+.itop{display:flex;align-items:center;gap:10px}
+.itop .emoji{font-size:28px;line-height:1}
+.itop .name{flex:1;font-size:16px;font-weight:600;line-height:1.2}
+.itop .kc{font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
+.item.on .kc{color:var(--accent)}
+.chips{display:flex;gap:8px;margin-top:10px}
+.ch{flex:1;min-width:0;height:48px;border-radius:12px;border:1px solid var(--line);background:#0e1b14;
+  font-weight:700;font-size:16px;cursor:pointer}
+.ch:active{transform:scale(.96)}
+.ch.on{background:var(--accent);color:#04210f;border-color:var(--accent)}
+.ch small{display:block;font-size:10px;font-weight:500;opacity:.75;margin-top:-2px}
 
-/* Extra (custom kcal) */
-.extra{display:flex;gap:8px;margin-top:10px}
-.extra input{flex:1;min-width:0;height:48px;border-radius:14px;border:1px solid var(--line);
+/* Extra / forms */
+.extra{display:flex;gap:8px;margin-top:6px}
+.extra input,.field input{flex:1;min-width:0;height:48px;border-radius:14px;border:1px solid var(--line);
   background:var(--card);color:var(--text);padding:0 14px;font-size:16px;-webkit-user-select:text;user-select:text}
 .btn{height:48px;padding:0 18px;border-radius:14px;border:0;background:var(--accent);color:#04210f;
   font-weight:700;cursor:pointer}
 .btn.ghost{background:var(--card);color:var(--text);border:1px solid var(--line)}
+.btn.danger{color:#ff7a7a}
 .tag{display:inline-flex;align-items:center;gap:6px;margin:8px 8px 0 0;padding:8px 12px;border-radius:999px;
   background:var(--card2);border:1px solid var(--line);font-size:14px}
 .tag button{border:0;background:none;color:var(--muted);font-size:16px;cursor:pointer}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--muted);margin:0 2px 6px}
 
 /* Week */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
@@ -106,15 +121,15 @@ h3{margin:18px 2px 6px;font-size:16px}
 .note{font-size:12px;color:var(--muted);margin:6px 2px}
 
 /* Bottom nav */
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;justify-content:center;
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;
   padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(11,20,16,.92);
-  backdrop-filter:blur(10px);border-top:1px solid var(--line)}
-nav button{flex:1;max-width:260px;height:52px;border-radius:16px;border:1px solid var(--line);
-  background:var(--card);font-size:16px;font-weight:700;cursor:pointer}
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+nav button{flex:1;max-width:200px;height:52px;border-radius:16px;border:1px solid var(--line);
+  background:var(--card);font-size:15px;font-weight:700;cursor:pointer}
 nav button.active{background:var(--accent);color:#04210f;border-color:var(--accent)}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);
   background:var(--card2);border:1px solid var(--accent);padding:10px 16px;border-radius:12px;font-size:14px;
-  opacity:0;pointer-events:none;transition:opacity .2s}
+  opacity:0;pointer-events:none;transition:opacity .2s;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
@@ -123,60 +138,86 @@ nav button.active{background:var(--accent);color:#04210f;border-color:var(--acce
 <nav>
   <button data-act="tab" data-tab="day" id="tab-day">🍽️ I dag</button>
   <button data-act="tab" data-tab="week" id="tab-week">📊 Uke</button>
+  <button data-act="tab" data-tab="me" id="tab-me">👤 Meg</button>
 </nav>
 <input type="file" id="importFile" accept="application/json" hidden>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== CONFIG – edit this to change the menu, kcal values and goals ===== */
-const GOAL = 4000;
-const ZONE = [3500, 4500];
-const SCALE_MAX = 5000;
+/* ===== CONFIG – edit this to change the menu and kcal values ===== */
+/* N(per, counts)  = countable food: chips are numbers, kcal = number x per
+   Z(l, v, s)      = plate meal: chips Liten / Vanlig / Stor with their own kcal
+   C([label,kcal]…) = custom chips                                             */
+const DEFAULT_GOAL = 4000;
+const ZONE_HALF = 500;                     // zone = goal ± 500
+
+const N = (per, counts = [2, 3, 4, 5]) => counts.map(n => ({ l: String(n), kcal: n * per }));
+const Z = (l, v, s) => [{ l: 'Liten', kcal: l }, { l: 'Vanlig', kcal: v }, { l: 'Stor', kcal: s }];
+const C = (...a) => a.map(([l, kcal]) => ({ l, kcal }));
 
 const SECTIONS = [
-  { id: 'breakfast', name: 'Frokost', emoji: '🍳', range: [500, 800], items: [
-    { id: 'b1', name: '4 brødskiver med pålegg', emoji: '🍞', kcal: 600 },
-    { id: 'b2', name: '3–4 egg + 3 brødskiver',  emoji: '🥚', kcal: 700 },
-    { id: 'b3', name: 'Havregryn + syltetøy',    emoji: '🥣', kcal: 500 },
+  { id: 'breakfast', name: 'Frokost', emoji: '🍳', items: [
+    { id: 'b_brod',  name: 'Brødskiver med pålegg',  emoji: '🍞', opts: N(150) },
+    { id: 'b_egg',   name: 'Egg',                    emoji: '🥚', opts: N(80) },
+    { id: 'b_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700) },
+    { id: 'b_flak',  name: 'Frokostblanding + melk', emoji: '🥛', opts: Z(300, 450, 600) },
+    { id: 'b_yog',   name: 'Yoghurt + müsli',        emoji: '🍨', opts: Z(300, 450, 600) },
   ]},
-  { id: 'lunch', name: 'Skolelunsj', emoji: '🎒', range: [600, 1000], items: [
-    { id: 'l1', name: '3–4 toast skinke/ost',     emoji: '🥪', kcal: 850 },
-    { id: 'l2', name: 'Havregryn + nøtter + syltetøy', emoji: '🥜', kcal: 750 },
-    { id: 'l3', name: 'Grove rundstykker/brødskiver', emoji: '🥖', kcal: 700 },
+  { id: 'lunch', name: 'Skolelunsj', emoji: '🎒', items: [
+    { id: 'l_toast', name: 'Toast skinke/ost',       emoji: '🥪', opts: N(210) },
+    { id: 'l_brod',  name: 'Matpakke-brødskiver',    emoji: '🍞', opts: N(150) },
+    { id: 'l_rund',  name: 'Rundstykke med pålegg',  emoji: '🥖', opts: N(250, [1, 2, 3]) },
+    { id: 'l_wrap',  name: 'Wrap med kylling',       emoji: '🌯', opts: N(350, [1, 2, 3]) },
+    { id: 'l_havre', name: 'Havregryn + nøtter + syltetøy', emoji: '🥜', opts: Z(500, 750, 950) },
   ]},
-  { id: 'training', name: 'Mellommåltid / trening', emoji: '⚽', range: [500, 900], items: [
-    { id: 't1', name: 'Kylling + ris (matboks)',  emoji: '🍗', kcal: 750 },
-    { id: 't2', name: 'Kylling + pasta',          emoji: '🍝', kcal: 750 },
-    { id: 't3', name: 'Wraps med kylling',        emoji: '🌯', kcal: 650 },
-    { id: 't4', name: 'Toast + nøtter',           emoji: '🥜', kcal: 650 },
+  { id: 'pre', name: 'Før trening', emoji: '⚽', items: [
+    { id: 'p_pb',    name: 'Brødskive med peanøttsmør', emoji: '🥜', opts: N(200, [1, 2, 3]) },
+    { id: 'p_bar',   name: 'Müslibar',               emoji: '🍫', opts: N(200, [1, 2]) },
+    { id: 'p_nuts',  name: 'Nøtter (neve)',          emoji: '🥜', opts: N(250, [1, 2, 3]) },
+    { id: 'p_saft',  name: 'Saft / sportsdrikk (5 dl)', emoji: '🧃', opts: C(['1 stk', 100]) },
   ]},
-  { id: 'dinner', name: 'Middag', emoji: '🍽️', range: [700, 1200], items: [
-    { id: 'd1', name: 'Kylling + ris + grønnsaker', emoji: '🍛', kcal: 1000 },
-    { id: 'd2', name: 'Laks/ørret + poteter',       emoji: '🐟', kcal: 850 },
-    { id: 'd3', name: 'Taco',                       emoji: '🌮', kcal: 1000 },
-    { id: 'd4', name: 'Pasta og kjøttsaus',         emoji: '🍝', kcal: 1000 },
-    { id: 'd5', name: 'Wok med kylling',            emoji: '🥘', kcal: 950 },
+  { id: 'post', name: 'Etter trening', emoji: '💪', items: [
+    { id: 'a_choc',  name: 'Sjokolademelk',          emoji: '🥛', opts: C(['3 dl', 250], ['5 dl', 400]) },
+    { id: 'a_shake', name: 'Proteinshake med melk',  emoji: '🥤', opts: C(['Vanlig', 350], ['Stor', 500]) },
+    { id: 'a_matb',  name: 'Kylling + ris (matboks)',emoji: '🍗', opts: Z(550, 750, 950) },
+    { id: 'a_wrap',  name: 'Wrap med kylling',       emoji: '🌯', opts: N(350, [1, 2, 3]) },
   ]},
-  { id: 'evening', name: 'Kveldsmat', emoji: '🌙', range: [400, 800], items: [
-    { id: 'e1', name: 'Havregryn + syltetøy',     emoji: '🥣', kcal: 500 },
-    { id: 'e2', name: '3–4 toast ost/skinke',     emoji: '🥪', kcal: 700 },
-    { id: 'e3', name: '3 egg + brødskiver',       emoji: '🥚', kcal: 600 },
-    { id: 'e4', name: 'Rester: kylling og ris',   emoji: '🍗', kcal: 650 },
+  { id: 'dinner', name: 'Middag', emoji: '🍽️', items: [
+    { id: 'd_kyl',   name: 'Kylling + ris + grønnsaker', emoji: '🍛', opts: Z(700, 1000, 1300) },
+    { id: 'd_laks',  name: 'Laks/ørret + poteter',   emoji: '🐟', opts: Z(650, 850, 1050) },
+    { id: 'd_pasta', name: 'Pasta + kjøttsaus',      emoji: '🍝', opts: Z(750, 1000, 1300) },
+    { id: 'd_wok',   name: 'Wok med kylling',        emoji: '🥘', opts: Z(700, 950, 1200) },
+    { id: 'd_taco',  name: 'Taco (lefser)',          emoji: '🌮', opts: N(250) },
+    { id: 'd_pizza', name: 'Pizza (skiver)',         emoji: '🍕', opts: N(280) },
   ]},
-  { id: 'boost', name: 'Boostere', emoji: '⚡', range: [200, 400], items: [
-    { id: 'x1', name: 'Nøtter (stor neve)',       emoji: '🥜', kcal: 250 },
-    { id: 'x2', name: 'Ekstra kokt egg',          emoji: '🥚', kcal: 80 },
-    { id: 'x3', name: 'Ekstra toast',             emoji: '🍞', kcal: 225 },
-    { id: 'x4', name: 'Ekstra ris/pasta',         emoji: '🍚', kcal: 300 },
+  { id: 'evening', name: 'Kveldsmat', emoji: '🌙', items: [
+    { id: 'e_havre', name: 'Havregrøt + syltetøy',   emoji: '🥣', opts: Z(350, 500, 700) },
+    { id: 'e_toast', name: 'Toast ost/skinke',       emoji: '🥪', opts: N(210) },
+    { id: 'e_egg',   name: 'Egg',                    emoji: '🥚', opts: N(80) },
+    { id: 'e_brod',  name: 'Brødskiver',             emoji: '🍞', opts: N(150) },
+    { id: 'e_rest',  name: 'Rester fra middag',      emoji: '🍗', opts: Z(450, 650, 850) },
+    { id: 'e_skyr',  name: 'Skyr/yoghurt + müsli',   emoji: '🍨', opts: Z(300, 450, 600) },
+  ]},
+  { id: 'drink', name: 'Drikke', emoji: '🥛', note: '⚠️ Sjekk at saft og smoothie ikke har appelsin.', items: [
+    { id: 'k_melk',  name: 'Melk (glass)',           emoji: '🥛', opts: N(110, [1, 2, 3, 4]) },
+    { id: 'k_kakao', name: 'Kakao',                  emoji: '☕', opts: N(150, [1, 2, 3]) },
+    { id: 'k_eple',  name: 'Eplejuice (glass)',      emoji: '🧃', opts: N(90, [1, 2, 3]) },
+    { id: 'k_smoo',  name: 'Smoothie',               emoji: '🥤', opts: C(['Vanlig', 350], ['Stor', 500]) },
+  ]},
+  { id: 'boost', name: 'Boostere', emoji: '⚡', items: [
+    { id: 'x_nuts',  name: 'Nøtter (neve)',          emoji: '🥜', opts: N(250, [1, 2, 3]) },
+    { id: 'x_smor',  name: 'Ekstra smør/olje på maten', emoji: '🧈', opts: C(['1 stk', 100]) },
+    { id: 'x_ost',   name: 'Ostebiter',              emoji: '🧀', opts: N(100, [1, 2, 3]) },
+    { id: 'x_rosin', name: 'Rosiner / tørket frukt', emoji: '🍇', opts: N(150, [1, 2]) },
   ]},
 ];
-const PORTION_STEPS = [1, 1.5, 2, 0.5];
-/* ======================================================================== */
+/* ================================================================== */
 
-const STORE_KEY = 'simplecal.v1';
+const STORE_KEY = 'simplecal.v2';
 const ITEMS = {};
 SECTIONS.forEach(s => s.items.forEach(i => ITEMS[i.id] = i));
 
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const pad = n => String(n).padStart(2, '0');
 const key = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parseKey = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
@@ -194,8 +235,11 @@ const isoWeek = d => {
 /* ---- storage ---- */
 let db = load();
 function load() {
-  try { const r = JSON.parse(localStorage.getItem(STORE_KEY)); if (r && r.days) return r; } catch (e) {}
-  return { days: {} };
+  try {
+    const r = JSON.parse(localStorage.getItem(STORE_KEY));
+    if (r && r.days) { r.profile = Object.assign({ name: '', goal: DEFAULT_GOAL }, r.profile); return r; }
+  } catch (e) {}
+  return { profile: { name: '', goal: DEFAULT_GOAL }, days: {} };
 }
 function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(db)); } catch (e) {} }
 const readDay = d => db.days[key(d)] || { items: {}, extra: [] };
@@ -205,22 +249,27 @@ function prune(d) {
   if (day && !Object.keys(day.items).length && !day.extra.length) delete db.days[k];
 }
 
+/* ---- goal / zone ---- */
+const goal = () => db.profile.goal;
+const zone = () => [goal() - ZONE_HALF, goal() + ZONE_HALF];
+const scaleMax = () => Math.ceil((goal() + 1000) / 500) * 500;
+
 /* ---- calculations ---- */
+const optKcal = (item, label) => { const o = item.opts.find(o => o.l === label); return o ? o.kcal : 0; };
 function sectionTotal(day, s) {
-  return s.items.reduce((sum, i) => sum + (day.items[i.id] || 0) * i.kcal, 0);
+  return s.items.reduce((sum, i) => sum + (day.items[i.id] ? optKcal(i, day.items[i.id]) : 0), 0);
 }
 const extraTotal = day => day.extra.reduce((a, b) => a + b, 0);
 const dayTotal = day => SECTIONS.reduce((sum, s) => sum + sectionTotal(day, s), 0) + extraTotal(day);
 
 /* ---- view state ---- */
 const today = startOfDay(new Date());
-const view = { tab: 'day', date: today };
+const view = { tab: 'day', date: today, open: undefined };  // open: undefined = auto, null = none
 const $app = document.getElementById('app');
 
 function render() {
-  $app.innerHTML = view.tab === 'day' ? dayView() : weekView();
-  document.getElementById('tab-day').classList.toggle('active', view.tab === 'day');
-  document.getElementById('tab-week').classList.toggle('active', view.tab === 'week');
+  $app.innerHTML = view.tab === 'day' ? dayView() : view.tab === 'week' ? weekView() : meView();
+  ['day', 'week', 'me'].forEach(t => document.getElementById('tab-' + t).classList.toggle('active', view.tab === t));
 }
 
 function dayLabel(d) {
@@ -231,33 +280,60 @@ function dayLabel(d) {
   return full;
 }
 
-function dayView() {
-  const d = view.date, day = readDay(d), total = dayTotal(day);
-  const pct = Math.min(total / SCALE_MAX, 1) * 100;
-  let status, cls = '';
-  if (total === 0) status = 'Trykk på det han har spist 👇';
-  else if (total < ZONE[0]) status = `Ca ${fmtNum(GOAL - total)} kcal igjen til ${fmtNum(GOAL)}`;
-  else if (total <= ZONE[1]) { status = 'I mål-sonen 💪'; cls = 'ok'; }
-  else { status = 'Over sonen – mye energi i dag'; cls = 'ok'; }
+function statusFor(total) {
+  const [zl, zh] = zone(), g = goal();
+  if (total === 0) return { cls: 'mer', text: 'Trykk på det du har spist 👇', sub: '' };
+  const left = g - total;
+  const sub = left > 0 ? `Mangler ca ${fmtNum(left)} kcal` : '';
+  if (total < g * 0.75) return { cls: 'mer', text: 'Mer! 🔥', sub };
+  if (total < zl) return { cls: 'nesten', text: 'Nesten 💪', sub };
+  if (total <= zh) return { cls: 'ok', text: 'Mål nådd ✅', sub };
+  return { cls: 'ok', text: 'Mål nådd ✅', sub: 'Over sonen – mye energi i dag' };
+}
 
-  const sections = SECTIONS.map(s => {
-    const sub = sectionTotal(day, s);
-    const items = s.items.map(i => {
-      const p = day.items[i.id] || 0;
-      return `<div class="item ${p ? 'on' : ''}" data-act="toggle" data-id="${i.id}" role="button">
-        <div><div class="emoji">${i.emoji}</div><div class="name">${i.name}</div></div>
-        <div class="kcal">~${fmtNum(i.kcal * (p || 1))} kcal</div>
-        ${p ? `<div class="chip" data-act="portion" data-id="${i.id}">×${p}</div>` : ''}
-      </div>`;
-    }).join('');
-    return `<section class="section">
-      <div class="sechead"><h2>${s.emoji} ${s.name}</h2>
-        <div class="sub">${sub ? `<b>${fmtNum(sub)}</b> kcal` : `mål ${s.range[0]}–${s.range[1]}`}</div></div>
-      <div class="grid">${items}</div></section>`;
+function itemCard(item, day) {
+  const sel = day.items[item.id];
+  const kc = sel ? optKcal(item, sel) : 0;
+  const lo = Math.min(...item.opts.map(o => o.kcal)), hi = Math.max(...item.opts.map(o => o.kcal));
+  const hint = sel ? `${fmtNum(kc)} kcal` : (lo === hi ? `~${fmtNum(lo)}` : `${fmtNum(lo)}–${fmtNum(hi)}`);
+  const chips = item.opts.map(o => {
+    const showKcal = item.opts.length <= 3 && !/^\d+$/.test(o.l);
+    return `<button class="ch ${sel === o.l ? 'on' : ''}" data-act="chip" data-id="${item.id}" data-l="${esc(o.l)}">${esc(o.l)}${showKcal ? `<small>${fmtNum(o.kcal)}</small>` : ''}</button>`;
+  }).join('');
+  return `<div class="item ${sel ? 'on' : ''}">
+    <div class="itop"><span class="emoji">${item.emoji}</span><span class="name">${item.name}</span><span class="kc">${hint}</span></div>
+    <div class="chips">${chips}</div></div>`;
+}
+
+function dayView() {
+  const d = view.date, day = readDay(d), total = dayTotal(day), g = goal(), [zl, zh] = zone(), max = scaleMax();
+  const st = statusFor(total);
+  const pct = Math.min(total / max, 1) * 100;
+  const firstEmpty = SECTIONS.find(s => sectionTotal(day, s) === 0);
+  const openId = view.open === undefined ? (firstEmpty ? firstEmpty.id : null) : view.open;
+
+  const meals = SECTIONS.map(s => {
+    const sub = sectionTotal(day, s), isOpen = openId === s.id;
+    const body = isOpen ? `<div class="mbody">
+      <div class="tools"><button class="btn ghost" data-act="copyYesterday" data-id="${s.id}">↻ Som i går</button>
+        ${sub ? `<button class="btn ghost danger" data-act="clearSection" data-id="${s.id}">Nullstill</button>` : ''}</div>
+      ${s.note ? `<div class="mnote">${s.note}</div>` : ''}
+      ${s.items.map(i => itemCard(i, day)).join('')}</div>` : '';
+    return `<section class="meal ${sub ? 'done' : ''}">
+      <div class="mhead" data-act="open" data-id="${s.id}"><h2>${s.emoji} ${s.name}</h2>
+        <div class="r">${sub ? `✅ ${fmtNum(sub)}` : (isOpen ? '▾' : '›')}</div></div>${body}</section>`;
   }).join('');
 
+  const extraOpen = openId === 'extra';
   const extras = day.extra.map((k, idx) =>
     `<span class="tag">+${fmtNum(k)} kcal <button data-act="delExtra" data-idx="${idx}" aria-label="Fjern">✕</button></span>`).join('');
+  const extraMeal = `<section class="meal ${day.extra.length ? 'done' : ''}">
+    <div class="mhead" data-act="open" data-id="extra"><h2>➕ Annet</h2>
+      <div class="r">${day.extra.length ? `✅ ${fmtNum(extraTotal(day))}` : (extraOpen ? '▾' : '›')}</div></div>
+    ${extraOpen || day.extra.length ? `<div class="mbody">
+      ${extraOpen ? `<div class="extra"><input id="extraKcal" type="number" inputmode="numeric" placeholder="kcal, f.eks. 300">
+        <button class="btn" data-act="addExtra">Legg til</button></div>` : ''}
+      <div>${extras}</div></div>` : ''}</section>`;
 
   return `
     <div class="datebar">
@@ -266,59 +342,47 @@ function dayView() {
       <button class="iconbtn" data-act="shift" data-n="1" aria-label="Neste dag" ${d >= today ? 'disabled' : ''}>›</button>
     </div>
     <div class="summary">
-      <div class="big">${fmtNum(total)}<span>/ ${fmtNum(GOAL)} kcal</span></div>
-      <div class="status ${cls}">${status}</div>
+      ${db.profile.name ? `<div class="hello">Hei, ${esc(db.profile.name)} 👋</div>` : ''}
+      <div class="big">${fmtNum(total)}<span>/ ${fmtNum(g)} kcal</span></div>
+      <div class="status ${st.cls}">${st.text}${st.sub ? `<small>${st.sub}</small>` : ''}</div>
       <div class="track">
-        <div class="zone" style="left:${ZONE[0] / SCALE_MAX * 100}%;width:${(ZONE[1] - ZONE[0]) / SCALE_MAX * 100}%"></div>
-        <div class="fill ${total > ZONE[1] ? 'over' : ''}" style="width:${pct}%"></div>
+        <div class="zone" style="left:${zl / max * 100}%;width:${(zh - zl) / max * 100}%"></div>
+        <div class="fill ${total > zh ? 'over' : ''}" style="width:${pct}%"></div>
       </div>
-      <div class="scale"><span>0</span><span>${fmtNum(ZONE[0])}</span><span>${fmtNum(ZONE[1])}</span><span>${fmtNum(SCALE_MAX)}</span></div>
     </div>
-    ${sections}
-    <section class="section">
-      <div class="sechead"><h2>➕ Annet</h2><div class="sub">egen kcal</div></div>
-      <div class="extra">
-        <input id="extraKcal" type="number" inputmode="numeric" placeholder="kcal, f.eks. 300">
-        <button class="btn" data-act="addExtra">Legg til</button>
-      </div>
-      <div>${extras}</div>
-    </section>`;
+    ${meals}${extraMeal}`;
 }
 
 function weekView() {
-  const mon = mondayOf(view.date);
+  const mon = mondayOf(view.date), [zl, zh] = zone(), max = scaleMax();
   const days = Array.from({ length: 7 }, (_, i) => addDays(mon, i));
   const totals = days.map(d => dayTotal(readDay(d)));
   const logged = days.filter((d, i) => totals[i] > 0);
-  const sum = totals.reduce((a, b) => a + b, 0);
-  const avg = logged.length ? sum / logged.length : 0;
-  const inZone = totals.filter(t => t >= ZONE[0] && t <= ZONE[1]).length;
+  const avg = logged.length ? totals.reduce((a, b) => a + b, 0) / logged.length : 0;
+  const inZone = totals.filter(t => t >= zl).length;
   const names = ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'];
   const sun = days[6];
   const isCurrent = key(mondayOf(today)) === key(mon);
 
   const bars = days.map((d, i) => {
     const t = totals[i];
-    const h = Math.min(t / SCALE_MAX, 1) * 100;
-    const c = !t ? 'none' : t > ZONE[1] ? 'over' : t >= ZONE[0] ? 'in' : '';
+    const h = Math.min(t / max, 1) * 100;
+    const c = !t ? 'none' : t > zh ? 'over' : t >= zl ? 'in' : '';
     return `<div class="bcol" data-act="goDay" data-date="${key(d)}">
       <div class="n">${t ? (Math.round(t / 100) / 10).toFixed(1) + 'k' : ''}</div>
       <div class="bar ${c}" style="height:${h}%"></div></div>`;
   }).join('');
   const labels = days.map((d, i) => `<div class="${key(d) === key(today) ? 'today' : ''}">${names[i]}<br>${d.getDate()}.</div>`).join('');
 
-  const maxAvg = Math.max(...SECTIONS.map(s => s.range[1]));
-  const mrows = SECTIONS.map(s => {
+  const rows = SECTIONS.map(s => {
     const t = logged.reduce((a, d) => a + sectionTotal(readDay(d), s), 0);
-    const a = logged.length ? t / logged.length : 0;
-    return `<div class="mrow"><div class="nm">${s.emoji} ${s.name.split(' / ')[0]}</div>
-      <div class="mb"><i style="width:${Math.min(a / maxAvg, 1) * 100}%"></i></div>
-      <div class="val">${fmtNum(a)}</div></div>`;
-  }).join('');
-  const otherAvg = logged.length ? logged.reduce((a, d) => a + extraTotal(readDay(d)), 0) / logged.length : 0;
-  const other = otherAvg ? `<div class="mrow"><div class="nm">➕ Annet</div>
-      <div class="mb"><i style="width:${Math.min(otherAvg / maxAvg, 1) * 100}%"></i></div>
-      <div class="val">${fmtNum(otherAvg)}</div></div>` : '';
+    return { nm: `${s.emoji} ${s.name}`, a: logged.length ? t / logged.length : 0 };
+  });
+  const oa = logged.length ? logged.reduce((a, d) => a + extraTotal(readDay(d)), 0) / logged.length : 0;
+  if (oa) rows.push({ nm: '➕ Annet', a: oa });
+  const maxAvg = Math.max(1, ...rows.map(r => r.a));
+  const mrows = rows.map(r => `<div class="mrow"><div class="nm">${r.nm}</div>
+      <div class="mb"><i style="width:${r.a / maxAvg * 100}%"></i></div><div class="val">${fmtNum(r.a)}</div></div>`).join('');
 
   return `
     <div class="datebar">
@@ -328,22 +392,35 @@ function weekView() {
     </div>
     <div class="cards">
       <div class="stat"><div class="v">${fmtNum(avg)}</div><div class="l">snitt kcal / dag (${logged.length} dager logget)</div></div>
-      <div class="stat"><div class="v">${inZone} / 7</div><div class="l">dager i sonen ${fmtNum(ZONE[0])}–${fmtNum(ZONE[1])}</div></div>
+      <div class="stat"><div class="v">${inZone} / 7</div><div class="l">dager med mål nådd (${fmtNum(zl)}+)</div></div>
     </div>
     <div class="bars">
-      <div class="zoneband" style="bottom:calc(${ZONE[0] / SCALE_MAX * 100}% * .92 + 8px);height:calc(${(ZONE[1] - ZONE[0]) / SCALE_MAX * 100}% * .92)"></div>
+      <div class="zoneband" style="bottom:calc(${zl / max * 100}% * .92 + 8px);height:calc(${(zh - zl) / max * 100}% * .92)"></div>
       ${bars}
     </div>
     <div class="days">${labels}</div>
     <h3>Snitt per måltid (kcal)</h3>
-    <div>${mrows}${other}</div>
-    <p class="note">Snitt regnes kun over dager med noe logget. Trykk på en søyle for å åpne dagen.</p>
+    <div>${mrows}</div>
+    <p class="note">Snitt regnes kun over dager med noe logget. Trykk på en søyle for å åpne dagen.</p>`;
+}
+
+function meView() {
+  return `
+    <div class="datebar"><div class="label">👤 Meg</div></div>
+    <div class="field"><label for="pname">Navn</label>
+      <input id="pname" type="text" maxlength="30" value="${esc(db.profile.name)}" placeholder="Valgfritt"></div>
+    <div class="field"><label for="pgoal">Mål per dag (kcal)</label>
+      <input id="pgoal" type="number" inputmode="numeric" min="1000" max="8000" step="100" value="${goal()}"></div>
+    <p class="note">Målsonen er mål ±${ZONE_HALF} kcal. Standard er ${fmtNum(DEFAULT_GOAL)}.</p>
     <h3>Sikkerhetskopi</h3>
-    <p class="note">Data lagres kun på denne telefonen. Ta backup av og til, eller flytt data til en annen enhet.</p>
+    <p class="note">Alt lagres kun i denne nettleseren på denne enheten. Ingen konto, ingen server. Ta backup av og til, eller bruk filen for å flytte data til en annen enhet (f.eks. PC).</p>
     <div class="extra">
       <button class="btn ghost" style="flex:1" data-act="export">⬇️ Eksporter</button>
       <button class="btn ghost" style="flex:1" data-act="import">⬆️ Importer</button>
-    </div>`;
+    </div>
+    <h3>Slett alt</h3>
+    <div class="extra"><button class="btn ghost danger" style="flex:1" data-act="wipe">🗑️ Slett alle data</button></div>
+    <p class="note">Kcal-verdiene er grove anslag, ikke nøyaktige målinger.</p>`;
 }
 
 /* ---- actions ---- */
@@ -353,6 +430,7 @@ function toast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1800);
 }
+function keepScroll(fn) { const y = window.scrollY; fn(); window.scrollTo(0, y); }
 
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]');
@@ -361,24 +439,36 @@ document.addEventListener('click', e => {
   if (a === 'tab') { view.tab = el.dataset.tab; render(); window.scrollTo(0, 0); return; }
   if (a === 'shift') {
     const nd = addDays(view.date, Number(el.dataset.n));
-    if (nd <= today) { view.date = nd; render(); window.scrollTo(0, 0); }
+    if (nd <= today) { view.date = nd; view.open = undefined; render(); window.scrollTo(0, 0); }
     return;
   }
   if (a === 'weekShift') {
     const nd = addDays(view.date, Number(el.dataset.n));
     view.date = nd > today ? today : nd; render(); return;
   }
-  if (a === 'goDay') { view.date = parseKey(el.dataset.date); view.tab = 'day'; render(); window.scrollTo(0, 0); return; }
-  if (a === 'toggle') {
-    const day = writeDay(view.date), id = el.dataset.id;
-    if (day.items[id]) delete day.items[id]; else day.items[id] = 1;
+  if (a === 'goDay') { view.date = parseKey(el.dataset.date); view.open = undefined; view.tab = 'day'; render(); window.scrollTo(0, 0); return; }
+  if (a === 'open') {
+    view.open = (view.open === undefined ? autoOpen() : view.open) === el.dataset.id ? null : el.dataset.id;
+    keepScroll(render); return;
+  }
+  if (a === 'chip') {
+    const id = el.dataset.id, l = el.dataset.l, day = writeDay(view.date);
+    if (day.items[id] === l) delete day.items[id]; else day.items[id] = l;
     prune(view.date); save(); buzz(); keepScroll(render); return;
   }
-  if (a === 'portion') {
-    const day = writeDay(view.date), id = el.dataset.id;
-    const idx = PORTION_STEPS.indexOf(day.items[id]);
-    day.items[id] = PORTION_STEPS[(idx + 1) % PORTION_STEPS.length];
+  if (a === 'copyYesterday') {
+    const s = SECTIONS.find(x => x.id === el.dataset.id), prev = readDay(addDays(view.date, -1));
+    const picks = s.items.filter(i => prev.items[i.id] && optKcal(i, prev.items[i.id]));
+    if (!picks.length) { toast('Ingenting i går å kopiere'); return; }
+    const day = writeDay(view.date);
+    s.items.forEach(i => delete day.items[i.id]);
+    picks.forEach(i => day.items[i.id] = prev.items[i.id]);
     save(); buzz(); keepScroll(render); return;
+  }
+  if (a === 'clearSection') {
+    const s = SECTIONS.find(x => x.id === el.dataset.id), day = writeDay(view.date);
+    s.items.forEach(i => delete day.items[i.id]);
+    prune(view.date); save(); keepScroll(render); return;
   }
   if (a === 'addExtra') {
     const v = Math.round(Number(document.getElementById('extraKcal').value));
@@ -391,9 +481,26 @@ document.addEventListener('click', e => {
   }
   if (a === 'export') { exportData(); return; }
   if (a === 'import') { document.getElementById('importFile').click(); return; }
+  if (a === 'wipe') {
+    if (confirm('Slette ALLE data på denne enheten? Dette kan ikke angres.')) {
+      db = { profile: { name: '', goal: DEFAULT_GOAL }, days: {} }; save(); render(); toast('Alt er slettet');
+    }
+  }
 });
 
-function keepScroll(fn) { const y = window.scrollY; fn(); window.scrollTo(0, y); }
+function autoOpen() {
+  const day = readDay(view.date), s = SECTIONS.find(x => sectionTotal(day, x) === 0);
+  return s ? s.id : null;
+}
+
+document.addEventListener('change', e => {
+  if (e.target.id === 'pname') { db.profile.name = e.target.value.trim().slice(0, 30); save(); toast('Lagret'); }
+  if (e.target.id === 'pgoal') {
+    const v = Math.round(Number(e.target.value));
+    if (v >= 1000 && v <= 8000) { db.profile.goal = v; save(); toast('Mål lagret'); }
+    else { e.target.value = goal(); toast('Velg mellom 1000 og 8000'); }
+  }
+});
 
 function exportData() {
   const blob = new Blob([JSON.stringify(db, null, 1)], { type: 'application/json' });
@@ -413,9 +520,13 @@ document.getElementById('importFile').addEventListener('change', async ev => {
     for (const [k, v] of Object.entries(data.days)) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(k) || !v || typeof v.items !== 'object') continue;
       const items = {};
-      for (const [id, p] of Object.entries(v.items)) if (ITEMS[id] && Number(p) > 0) items[id] = Number(p);
+      for (const [id, l] of Object.entries(v.items)) if (ITEMS[id] && optKcal(ITEMS[id], String(l))) items[id] = String(l);
       const extra = (Array.isArray(v.extra) ? v.extra : []).map(Number).filter(x => x > 0);
       db.days[k] = { items, extra }; n++;
+    }
+    if (data.profile && Number(data.profile.goal) >= 1000 && Number(data.profile.goal) <= 8000) {
+      db.profile.goal = Math.round(Number(data.profile.goal));
+      if (typeof data.profile.name === 'string') db.profile.name = data.profile.name.slice(0, 30);
     }
     save(); render(); toast(`Importerte ${n} dager`);
   } catch (err) { toast('Ugyldig fil'); }
@@ -426,6 +537,11 @@ document.getElementById('importFile').addEventListener('change', async ev => {
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && key(new Date()) !== key(today)) location.reload();
 });
+
+/* Offline support (only over http/https) */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 
 render();
 </script>

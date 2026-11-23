@@ -4,32 +4,36 @@
 
 ## Design principles
 
-- **Under 10 seconds per day.** One tap per meal item; no typing unless adding a custom "Annet" kcal entry.
-- **Big targets.** Two-column card grid, 92px tall cards, thumb-reach bottom nav.
+- **Under 10 seconds per day.** One tap per food; no typing unless adding a custom "Annet" kcal entry.
+- **Big targets.** Full-width cards with 48px chips, thumb-reach bottom nav.
 - **Zone, not perfection.** The goal is 3500–4500 kcal over time, shown as a green band, not a pass/fail score.
-- **Dad edits the menu, son only ticks.** All meals, kcal values and goals live in the `CONFIG` block at the top of the script in `index.html`.
+- **Dad edits the menu, son only ticks.** All meals and kcal values live in the `CONFIG` block at the top of the script in `index.html`.
 
-## Features (v1)
+## Features
 
 | Area | What it does |
 |---|---|
-| Day view | Date navigation, total vs. goal bar with zone band, 5 meal sections + boosters |
-| Portions | Tap a checked card's chip to cycle ×1 → ×1.5 → ×2 → ×0.5 |
-| Custom | "Annet": add any kcal amount to the day |
-| Week view | Avg kcal/day, days in zone, bar per day (tap to open), avg per meal |
-| Backup | Export / import JSON (merge by date) |
+| Day view | Date navigation, total vs. goal bar, 8 collapsible meal blocks in day order |
+| Portions | Chips on each card: numbers (`2 3 4 5`) for countable foods, `Liten / Vanlig / Stor` for plate meals. Tap again to remove |
+| Shortcuts | "↻ Som i går" copies yesterday's choices for a meal; "Annet" adds any kcal |
+| Status | Mer! / Nesten / Mål nådd, plus "Mangler ca X kcal" |
+| Week view | Avg kcal/day, days with goal reached, bar per day (tap to open), avg per meal |
+| Profile | Name and daily goal (zone = goal ±500) |
+| Backup | Export / import JSON (merge by date), wipe all data |
+| Offline | Service worker + manifest + iPhone home-screen icon |
 
 ## Data model
 
 ```json
-{ "days": { "2026-11-23": { "items": { "b1": 1, "d3": 1.5 }, "extra": [300] } } }
+{ "profile": { "name": "", "goal": 4000 },
+  "days": { "2026-11-23": { "items": { "b_brod": "4", "d_kyl": "Stor" }, "extra": [300] } } }
 ```
 
-Item ids map to the `SECTIONS` config. kcal is computed at read time, so changing a kcal value in the config also changes history.
+Item ids map to the `SECTIONS` config; the value is the chip label that was picked. kcal is computed at read time, so changing a kcal value in the config also changes history. Data stays in the browser's `localStorage` (key `simplecal.v2`) — no account, no server.
 
 ## Deploy (GitHub Pages)
 
-1. Create the repo `simplecal`, add `index.html` + `README.md`, push to `main`.
+1. Push all files (`index.html`, `sw.js`, `manifest.webmanifest`, icons) to `main`.
 2. Repo → Settings → Pages → Source: `main` / root.
 3. Open `https://<user>.github.io/simplecal/` on the phone → Share → **Add to Home Screen**.
 
