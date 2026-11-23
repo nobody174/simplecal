@@ -21,6 +21,8 @@ Authoritative history of what has shipped.
 - Favourites: within each meal, the foods he logged most in the previous 30 days come first (ties keep menu order; today's own taps never reorder the list)
 - Menu trimmed to 5 meals: removed Før trening, Etter trening, Drikke and Boostere; added Etter skole (matboks, wrap, toast, egg, nøtter). "Annet" stays
 - Portion guide: size hints under Liten/Vanlig/Stor (≈ 50/75/100 g dry oats, plate rule for dinner) and a "weigh your own bowls once" guide in the Meg tab
+- Havregrøt matches the family's real bowls: Liten skål = 55 g dry oats (~300 kcal), Stor skål = 150 g (~650 kcal), oats go raw from the bag with hot water + jam; no middle size. Skolelunsj oats + nuts: 475 / 850
+- Frokostblanding and yoghurt use the same two bowls (provisional gram/dl values); yoghurt split into "vanlig" and "Gresk"
 - Storage key changed to `simplecal.v2` (v1 data is not migrated; the menu ids changed)
 
 ## v1 — initial release

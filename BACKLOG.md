@@ -8,7 +8,5 @@ Active todo list: bugs, fixes, adjustments and things to look into — everythin
 - Check the kcal values with the physio/dietitian
 - Review the menu with him: foods he doesn't eat, missing favourites
 - Check that offline works after "Add to Home Screen" (service worker needs https)
-- Confirm the frokostblanding kcal (200/300/450) with him — assumed dry cereal/muesli with water
-- Weigh the family's small and large bowl with their usual amount of dry havregryn, then set the real gram values in the OATS/CEREAL guides
-- Check that the new bowl/plate guides match the kcal (oats 50/75/100 g + milk + jam ≈ 350/500/700)
+- Weigh the real amounts in the small and big bowl for frokostblanding (dry g) and yoghurt (g, both vanlig and Gresk) and replace the provisional values (cereal 55/150 g, yoghurt 2/4 dl)
 - Tune the menu from real use: watch what he actually logs (especially Etter skole) and add/remove foods
