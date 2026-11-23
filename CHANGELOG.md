@@ -18,6 +18,7 @@ Authoritative history of what has shipped.
 - "Ferdig ✓" button closes a meal and opens the next one
 - Undo: "Angre" toast after every change
 - Removed kcal ranges from untouched cards (kcal shows once a chip is picked)
+- Favourites: within each meal, the foods he logged most in the previous 30 days come first (ties keep menu order; today's own taps never reorder the list)
 - Storage key changed to `simplecal.v2` (v1 data is not migrated; the menu ids changed)
 
 ## v1 — initial release

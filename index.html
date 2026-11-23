@@ -297,6 +297,19 @@ function statusFor(total) {
   return { cls: 'ok', text: 'Mål nådd ✅', sub: 'Over sonen – mye energi i dag' };
 }
 
+/* Favourites: foods logged most in the 30 days BEFORE the viewed day come first
+   (today's own taps never reorder the list while he is picking). */
+function favCounts(d) {
+  const counts = {}, from = key(addDays(d, -30)), to = key(d);
+  for (const [k, day] of Object.entries(db.days)) {
+    if (k < from || k >= to) continue;
+    for (const id of Object.keys(day.items)) counts[id] = (counts[id] || 0) + 1;
+  }
+  return counts;
+}
+const byFav = (items, counts) => items.map((it, i) => [it, i])
+  .sort((a, b) => (counts[b[0].id] || 0) - (counts[a[0].id] || 0) || a[1] - b[1]).map(x => x[0]);
+
 function itemCard(item, day) {
   const sel = day.items[item.id];
   const kc = sel ? optKcal(item, sel) : 0;
@@ -314,6 +327,7 @@ function dayView() {
   const d = view.date, day = readDay(d), total = dayTotal(day), g = goal(), [zl, zh] = zone(), max = scaleMax();
   const st = statusFor(total);
   const pct = Math.min(total / max, 1) * 100;
+  const counts = favCounts(d);
   const firstEmpty = SECTIONS.find(s => sectionTotal(day, s) === 0);
   const openId = view.open === undefined ? (firstEmpty ? firstEmpty.id : null) : view.open;
 
@@ -323,7 +337,7 @@ function dayView() {
       <div class="tools"><button class="btn ghost" data-act="copyYesterday" data-id="${s.id}">↻ Som i går</button>
         ${sub ? `<button class="btn ghost danger" data-act="clearSection" data-id="${s.id}">Nullstill</button>` : ''}</div>
       ${s.note ? `<div class="mnote">${s.note}</div>` : ''}
-      ${s.items.map(i => itemCard(i, day)).join('')}
+      ${byFav(s.items, counts).map(i => itemCard(i, day)).join('')}
       <button class="btn done" data-act="next" data-id="${s.id}">Ferdig ✓</button></div>` : '';
     return `<section class="meal ${sub ? 'done' : ''}">
       <div class="mhead" data-act="open" data-id="${s.id}"><h2>${s.emoji} ${s.name}</h2>

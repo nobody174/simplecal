@@ -15,7 +15,7 @@
 |---|---|
 | Day view | Date navigation, total vs. goal bar, 8 collapsible meal blocks in day order |
 | Portions | Chips on each card: numbers (`2 3 4 5`) for countable foods, `Liten / Vanlig / Stor` for plate meals. Tap again to remove |
-| Shortcuts | "↻ Som i går" copies yesterday's choices for a meal; "Annet" adds any kcal |
+| Shortcuts | Most-logged foods float to the top of each meal; "↻ Som i går" copies yesterday's choices for a meal; "Annet" adds any kcal |
 | Status | Mer! / Nesten / Mål nådd, plus "Mangler ca X kcal" |
 | Week view | Avg kcal/day, days with goal reached, bar per day (tap to open), avg per meal |
 | Profile | Name and daily goal (zone = goal ±500) |
